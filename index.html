@@ -3,223 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Standoff Hub | Личный кабинет</title>
+    <title>STANDOFF HUB | Личный кабинет</title>
     <style>
-        :root { --orange: #ff4500; --dark: #0a0a0a; --card: #161616; --text: #ffffff; }
-        body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 450px; padding: 15px; }
-        
-        /* Хедер с онлайном */
-        .header-bar { display: flex; justify-content: space-between; background: var(--card); padding: 12px; border-radius: 10px; margin-bottom: 15px; border-top: 2px solid var(--orange); font-size: 14px; }
-        .status-on { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+        :root {
+            --orange: #ff4500;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
 
-        /* Авторизация */
-        .auth-panel { background: var(--card); padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input { width: 90%; padding: 12px; margin: 8px 0; background: #222; border: 1px solid #333; color: white; border-radius: 6px; outline: none; }
-        .btn-main { background: var(--orange); color: white; border: none; padding: 14px 0; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        .btn-main:hover { background: #e63e00; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            /* Фон в стиле Стандофф */
+            background: url('https://i.ytimg.com/vi/VpI-yY_85K0/maxresdefault.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
 
-        /* Профиль (скрыт по умолчанию) */
-        #profile-box { display: none; background: var(--card); padding: 20px; border-radius: 15px; }
-        .user-header { display: flex; align-items: center; margin-bottom: 20px; }
-        .avatar-circle { width: 60px; height: 60px; background: linear-gradient(45deg, #ff4500, #ff8c00); border-radius: 50%; margin-right: 15px; }
-        
-        .gold-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .chip { background: #222; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #333; }
-        .gold-val { color: #ffd700; font-weight: bold; font-size: 18px; }
+        /* Сильное размытие фона */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px);
+            z-index: -1;
+        }
 
-        /* Сетка скинов */
-        .inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .item-card { background: #1a1a1a; padding: 8px; border-radius: 6px; text-align: center; font-size: 11px; border-bottom: 3px solid #8e44ad; }
-        .item-card img { width: 100%; border-radius: 4px; }
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        h2 { color: var(--orange); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #444;
+            border-radius: 12px;
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--orange);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        .btn:hover { background: #e63e00; transform: scale(1.02); }
+
+        #profile-ui { display: none; }
+
+        /* Аватарка */
+        .avatar-box {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        #avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--orange);
+            box-shadow: 0 0 20px var(--orange);
+        }
+
+        .balance-card {
+            background: rgba(0,0,0,0.4);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-up {
+            color: var(--orange);
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .check { color: #00ff00; display: none; font-size: 20px; margin-left: 8px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-bar">
-        <span>ВЫВОД: <span class="status-on">АКТИВЕН</span></span>
-        <span>ОНЛАЙН: <span id="online-num" class="status-on">412</span></span>
+    <div id="auth-ui" class="container">
+        <h2>Standoff Hub</h2>
+        <p style="opacity: 0.7;">Войдите через Google</p>
+        <input type="text" id="nick" placeholder="Введите ваш ник">
+        <input type="email" id="mail" placeholder="Ваш Gmail">
+        <button class="btn" onclick="login()">Создать кабинет</button>
+        <p style="font-size: 10px; margin-top: 20px; opacity: 0.5;">Нажимая кнопку, вы соглашаетесь с Cookie и политикой конфиденциальности.</p>
     </div>
 
-    <div id="auth-box" class="auth-panel">
-        <h2 style="color: var(--orange)">STANDOFF HUB</h2>
-        <p style="font-size: 13px; color: #888;">Создай свой кабинет для вывода голды</p>
-        <input type="text" id="user-nick" placeholder="Придумай псевдоним">
-        <input type="email" id="user-email" placeholder="Твой Gmail">
-        <button class="btn-main" onclick="startSession()">Создать кабинет</button>
-    </div>
-
-    <div id="profile-box">
-        <div class="user-header">
-            <div class="avatar-circle"></div>
-            <div>
-                <b id="display-nick" style="font-size: 20px;">Player</b><br>
-                <span id="display-email" style="font-size: 12px; color: #777;">email@gmail.com</span>
-            </div>
+    <div id="profile-ui" class="container">
+        <div class="avatar-box" onclick="document.getElementById('upload').click()">
+            <img id="avatar-img" src="https://via.placeholder.com/120" alt="Avatar">
+            <input type="file" id="upload" hidden accept="image/*" onchange="changeAva(event)">
         </div>
-
-        <div class="gold-chips">
-            <div class="chip">Баланс<br><span class="gold-val">2,500 G</span></div>
-            <div class="chip">Подарок<br><span class="gold-val" id="bonus">500 G</span></div>
-        </div>
-
-        <div style="background: #222; padding: 10px; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
-            <b style="color: var(--orange)">ТОП НЕДЕЛИ:</b><br>
-            1. Scrimmy — 15,200 G <br> 2. Fixer — 12,100 G
-        </div>
-
-        <button class="btn-main" style="background: #282828; margin-bottom: 15px;" onclick="window.location.href='https://youtube.com'">Привязать YouTube</button>
-
-        <h3 style="font-size: 16px;">Инвентарь для вывода:</h3>
-        <div class="inventory-grid">
-            <div class="item-card">M9 Bayonet<br><span style="color: #ff4500;">Dragon Glass</span></div>
-            <div class="item-card">AKR<br><span style="color: #8e44ad;">Treasure Hunter</span></div>
-            <div class="item-card">AWM<br><span style="color: #8e44ad;">Genesis</span></div>
-        </div>
-
-        <button class="btn-main" style="margin-top: 25px;" onclick="openGame()">ЗАПУСТИТЬ ИГРУ</button>
-    </div>
-</div>
-
-<script>
-    // Живой онлайн
-    setInterval(() => {
-        document.getElementById('online-num').innerText = Math.floor(Math.random() * (450 - 390) + 390);
-    }, 2500);
-
-    function startSession() {
-        const nick = document.getElementById('user-nick').value;
-        const mail = document.getElementById('user-email').value;
-
-        if(nick.length > 2 && mail.includes('@')) {
-            document.getElementById('auth-box').style.display = 'none';
-            document.getElementById('profile-box').style.display = 'block';
-            document.getElementById('display-nick').innerText = nick;
-            document.getElementById('display-email').innerText = mail;
-        } else {
-            alert("Введи корректный ник и почту!");
-        }
-    }
-
-    function openGame() {
-        const token = "st_" + Math.random().toString(36).substr(2, 12);
-        // Ссылка для запуска твоей игры
-        window.location.href = "mystandoff://auth?token=" + token;
-    }
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Standoff Hub | Личный кабинет</title>
-    <style>
-        :root { --orange: #ff4500; --dark: #0a0a0a; --card: #161616; --text: #ffffff; }
-        body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 450px; padding: 15px; }
         
-        /* Хедер с онлайном */
-        .header-bar { display: flex; justify-content: space-between; background: var(--card); padding: 12px; border-radius: 10px; margin-bottom: 15px; border-top: 2px solid var(--orange); font-size: 14px; }
-        .status-on { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+        <h3 id="user-nick" style="margin: 0;">Игрок</h3>
+        <p id="user-mail" style="font-size: 12px; opacity: 0.6; margin-bottom: 20px;"></p>
 
-        /* Авторизация */
-        .auth-panel { background: var(--card); padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input { width: 90%; padding: 12px; margin: 8px 0; background: #222; border: 1px solid #333; color: white; border-radius: 6px; outline: none; }
-        .btn-main { background: var(--orange); color: white; border: none; padding: 14px 0; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
-        .btn-main:hover { background: #e63e00; }
-
-        /* Профиль (скрыт по умолчанию) */
-        #profile-box { display: none; background: var(--card); padding: 20px; border-radius: 15px; }
-        .user-header { display: flex; align-items: center; margin-bottom: 20px; }
-        .avatar-circle { width: 60px; height: 60px; background: linear-gradient(45deg, #ff4500, #ff8c00); border-radius: 50%; margin-right: 15px; }
-        
-        .gold-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .chip { background: #222; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #333; }
-        .gold-val { color: #ffd700; font-weight: bold; font-size: 18px; }
-
-        /* Сетка скинов */
-        .inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .item-card { background: #1a1a1a; padding: 8px; border-radius: 6px; text-align: center; font-size: 11px; border-bottom: 3px solid #8e44ad; }
-        .item-card img { width: 100%; border-radius: 4px; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header-bar">
-        <span>ВЫВОД: <span class="status-on">АКТИВЕН</span></span>
-        <span>ОНЛАЙН: <span id="online-num" class="status-on">412</span></span>
-    </div>
-
-    <div id="auth-box" class="auth-panel">
-        <h2 style="color: var(--orange)">STANDOFF HUB</h2>
-        <p style="font-size: 13px; color: #888;">Создай свой кабинет для вывода голды</p>
-        <input type="text" id="user-nick" placeholder="Придумай псевдоним">
-        <input type="email" id="user-email" placeholder="Твой Gmail">
-        <button class="btn-main" onclick="startSession()">Создать кабинет</button>
-    </div>
-
-    <div id="profile-box">
-        <div class="user-header">
-            <div class="avatar-circle"></div>
-            <div>
-                <b id="display-nick" style="font-size: 20px;">Player</b><br>
-                <span id="display-email" style="font-size: 12px; color: #777;">email@gmail.com</span>
-            </div>
+        <div class="balance-card">
+            <span>Баланс: <b style="font-size: 20px;">0 G</b></span>
+            <span class="top-up" onclick="alert('Перенаправление на страницу оплаты...')">ПОПОЛНИТЬ</span>
         </div>
 
-        <div class="gold-chips">
-            <div class="chip">Баланс<br><span class="gold-val">2,500 G</span></div>
-            <div class="chip">Подарок<br><span class="gold-val" id="bonus">500 G</span></div>
-        </div>
+        <input type="text" placeholder="Введите код на подарок">
+        <button class="btn" onclick="window.location.href='https://help.standoff2.com/ru/'">Активировать код</button>
 
-        <div style="background: #222; padding: 10px; border-radius: 8px; font-size: 12px; margin-bottom: 15px;">
-            <b style="color: var(--orange)">ТОП НЕДЕЛИ:</b><br>
-            1. Scrimmy — 15,200 G <br> 2. Fixer — 12,100 G
-        </div>
-
-        <button class="btn-main" style="background: #282828; margin-bottom: 15px;" onclick="window.location.href='https://youtube.com'">Привязать YouTube</button>
-
-        <h3 style="font-size: 16px;">Инвентарь для вывода:</h3>
-        <div class="inventory-grid">
-            <div class="item-card">M9 Bayonet<br><span style="color: #ff4500;">Dragon Glass</span></div>
-            <div class="item-card">AKR<br><span style="color: #8e44ad;">Treasure Hunter</span></div>
-            <div class="item-card">AWM<br><span style="color: #8e44ad;">Genesis</span></div>
-        </div>
-
-        <button class="btn-main" style="margin-top: 25px;" onclick="openGame()">ЗАПУСТИТЬ ИГРУ</button>
-    </div>
-</div>
-
-<script>
-    // Живой онлайн
-    setInterval(() => {
-        document.getElementById('online-num').innerText = Math.floor(Math.random() * (450 - 390) + 390);
-    }, 2500);
-
-    function startSession() {
-        const nick = document.getElementById('user-nick').value;
-        const mail = document.getElementById('user-email').value;
-
-        if(nick.length > 2 && mail.includes('@')) {
-            document.getElementById('auth-box').style.display = 'none';
-            document.getElementById('profile-box').style.display = 'block';
-            document.getElementById('display-nick').innerText = nick;
-            document.getElementById('display-email').innerText = mail;
-        } else {
-            alert("Введи корректный ник и почту!");
-        }
-    }
-
-    function openGame() {
-        const token = "st_" + Math.random().toString(36).substr(2, 12);
-        // Ссылка для запуска твоей игры
-        window.location.href = "mystandoff://auth?token=" + token;
-    }
-</script>
-
-</body>
-</html>
+        <button class="btn" id="yt-btn" style="background: #cc0000; margin-top: 15px;" onclick="bindYT()">
+            При
