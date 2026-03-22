@@ -3,248 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STANDOFF HUB | Official Site</title>
+    <title>TRADE HUB | Official Standoff 2 Service</title>
     <style>
         :root { 
             --orange: #ff4500; 
             --dark: #0a0a0a; 
-            --card: rgba(22, 22, 22, 0.85); 
+            --card: rgba(15, 15, 15, 0.92); 
             --text: #ffffff; 
-            --rarity: #b035e2; /* Цвет для ножей */
+            --rarity: #b035e2; 
         }
         
         body { 
             background: var(--dark); 
             color: var(--text); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
             margin: 0; 
             display: flex; 
             justify-content: center; 
-            align-items: center; 
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Фоновое изображение с размытием */
+        /* Живой размытый фон */
         .background-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://img.freepik.com/free-photo/view-of-gaming-equipment-with-neon-lights_23-2151048805.jpg'); 
             background-size: cover; background-position: center;
-            filter: blur(12px); z-index: -1; transform: scale(1.1); 
+            filter: blur(15px) brightness(0.5); z-index: -1; transform: scale(1.1);
+            animation: bgPulse 10s infinite alternate;
         }
+        @keyframes bgPulse { from { transform: scale(1.1); } to { transform: scale(1.15); } }
 
-        /* Онлайн-статус в углу */
-        .online-counter {
-            position: fixed; top: 20px; right: 20px;
-            background: rgba(0,0,0,0.6); padding: 8px 15px;
-            border-radius: 20px; border: 1px solid var(--orange);
-            font-size: 13px; backdrop-filter: blur(5px); z-index: 10;
+        /* ЧАТ СЛЕВА */
+        .chat-box { 
+            position: fixed; left: 20px; bottom: 80px; width: 280px; height: 350px; 
+            background: rgba(0,0,0,0.7); border-radius: 15px; border: 1px solid rgba(255,69,0,0.2);
+            display: flex; flex-direction: column; backdrop-filter: blur(10px); z-index: 10;
         }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; font-size: 13px; display: flex; flex-direction: column; gap: 8px; }
+        .msg { background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border-left: 3px solid var(--orange); }
+        .msg b { color: var(--orange); font-size: 11px; display: block; }
 
-        /* Основной контейнер */
+        /* КОНТЕЙНЕРЫ */
         .container { 
-            width: 100%; max-width: 400px; padding: 25px; 
-            background: var(--card); border-radius: 25px; 
-            box-shadow: 0 0 50px rgba(0,0,0,0.8); text-align: center;
-            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1);
-            position: relative; animation: fadeIn 0.8s ease;
+            width: 100%; max-width: 400px; padding: 30px; 
+            background: var(--card); border-radius: 30px; 
+            box-shadow: 0 0 60px rgba(0,0,0,1); text-align: center;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05);
+            margin: 50px 0; position: relative; animation: slideUp 0.6s ease;
         }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1 { color: var(--orange); margin: 0; font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 15px rgba(255, 69, 0, 0.3); }
+        h1 { color: var(--orange); margin: 0; font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 20px rgba(255, 69, 0, 0.5); }
         
-        .google-btn {
-            background: white; color: #444; padding: 12px; border-radius: 12px; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; font-weight: bold; margin: 20px 0; border: none; width: 100%;
-            transition: 0.3s;
-        }
-        .google-btn:hover { background: #eee; transform: scale(1.02); }
-
-        input {
-            width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; 
-            border: 1px solid #444; background: rgba(0, 0, 0, 0.5); 
-            color: white; box-sizing: border-box; outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--orange); }
-        
-        .btn-main {
+        .btn {
             background: var(--orange); color: white; border: none; padding: 16px; 
             width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; 
             text-transform: uppercase; transition: 0.3s; margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.2);
         }
-        .btn-main:hover { background: #ff5e00; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4); }
+        .btn:hover { background: #ff5e00; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255, 69, 0, 0.4); }
+        .btn-donate { background: #28a745; }
 
-        /* Кабинет */
-        #cabinet { display: none; }
-        .avatar-circle {
-            width: 110px; height: 110px; background: rgba(51, 51, 51, 0.6);
-            border-radius: 50%; margin: 15px auto; overflow: hidden;
-            border: 3px solid var(--orange); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.2);
+        input {
+            width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; 
+            border: 1px solid #333; background: rgba(0, 0, 0, 0.6); 
+            color: white; box-sizing: border-box; outline: none;
         }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
-        .stat-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        .stat-item span { color: var(--orange); font-weight: bold; font-size: 16px; display: block; margin-top: 4px; }
 
-        /* Инвентарь со скинами */
-        .inventory-title { text-align: left; font-size: 14px; margin: 15px 0 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        /* ИНВЕНТАРЬ */
         .inventory-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
-            max-height: 220px; overflow-y: auto; padding-bottom: 10px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
+            max-height: 200px; overflow-y: auto;
         }
         .skin-card {
-            background: rgba(0,0,0,0.4); border-radius: 12px; padding: 10px;
-            border-bottom: 4px solid var(--rarity); font-size: 10px; text-align: center;
-            animation: scaleIn 0.4s ease;
+            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px;
+            border-bottom: 4px solid var(--rarity); font-size: 10px;
         }
-        @keyframes scaleIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .skin-card img { width: 80%; height: auto; margin-bottom: 5px; filter: drop-shadow(0 0 5px rgba(176, 53, 226, 0.4)); }
+        .skin-card img { width: 70%; height: auto; filter: drop-shadow(0 0 5px var(--rarity)); }
 
-        /* Уведомления снизу */
+        /* УВЕДОМЛЕНИЯ */
         #notification {
             position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.95); padding: 12px 25px; border-radius: 20px;
-            border: 1px solid var(--orange); transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 14px;
+            background: rgba(0,0,0,0.9); padding: 12px 25px; border-radius: 20px;
+            border: 1px solid var(--orange); transition: 0.5s; z-index: 100; font-size: 14px;
         }
+
+        /* КУКИ И ДОНАТ */
+        .cookie-bar { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px; font-size: 11px; z-index: 1000; border-top: 1px solid var(--orange); }
+        .youtube-link { color: #ff0000; text-decoration: none; font-weight: bold; display: block; margin: 15px 0; font-size: 14px; }
+        
+        #cabinet, #donate-ui, #admin-panel { display: none; }
+        .avatar-circle { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--orange); margin: 15px auto; overflow: hidden; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="background-image"></div>
-    <div class="online-counter">Online: <span id="onlineCount">1,412</span></div>
-    <div id="notification">Пользователь <b>Benz</b> выбил <b>Karambit</b>!</div>
+
+    <div class="chat-box">
+        <div style="padding: 10px; border-bottom: 1px solid #222; font-size: 11px; color: var(--orange); font-weight: bold;">LIVE COMMUNITY CHAT</div>
+        <div class="chat-messages" id="chatMsgs"></div>
+    </div>
+
+    <div id="notification"></div>
 
     <div id="auth-form" class="container">
-        <h1>STANDOFF HUB</h1>
-        <p style="color: #888; font-size: 13px; margin-top: 5px;">Авторизуйтесь в системе</p>
-        
-        <button class="google-btn" onclick="googleLogin()">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" width="18" style="margin-right:10px">
-            Войти через Google
-        </button>
-
-        <input type="text" id="nick" placeholder="Ваш игровой ник">
-        <input type="email" id="email" placeholder="Ваш Gmail">
-        
-        <button class="btn-main" onclick="openCabinet()">СОЗДАТЬ КАБИНЕТ</button>
-        <p style="font-size: 10px; color: #555; margin-top: 20px;">Нажимая кнопку, вы принимаете Cookie и правила площадки.</p>
+        <h1>TRADE HUB</h1>
+        <p style="color: #777; font-size: 12px;">Official Standoff 2 Marketplace</p>
+        <input type="text" id="nick" placeholder="Игровой ник">
+        <input type="email" id="email" placeholder="Gmail">
+        <input type="password" id="pass" placeholder="Пароль">
+        <button class="btn" onclick="register()">СОЗДАТЬ АККАУНТ</button>
+        <button class="btn" style="background: #222; font-size: 9px; margin-top: 20px;" onclick="adminLogin()">Вход для персонала</button>
     </div>
 
     <div id="cabinet" class="container">
-        <h2 id="userName" style="margin: 0; font-size: 22px;">Никнейм</h2>
-        <p id="userMail" style="color: #666; margin: 5px 0 0; font-size: 12px;">email@gmail.com</p>
-        
+        <h2 id="uName">Benz</h2>
+        <p id="uMail" style="font-size: 11px; color: #555;">mail@gmail.com</p>
         <div class="avatar-circle" onclick="document.getElementById('photoInput').click()">
-            <img id="avatarImg" src="" style="width:100%; height:100%; object-fit: cover; display:none;">
-            <span id="plusText" style="font-size: 40px; color: var(--orange);">+</span>
+            <img id="avatarImg" style="width:100%; height:100%; object-fit:cover; display:none;">
+            <span style="line-height:100px; font-size:30px; color: var(--orange);">+</span>
         </div>
-        <input type="file" id="photoInput" style="display:none" accept="image/*" onchange="previewImage(event)">
-
-        <div class="stats-grid">
-            <div class="stat-item"><small>Баланс</small><span id="balance">0 G</span></div>
-            <div class="stat-item"><small>Бонусы</small><span>0</span></div>
-            <div class="stat-item"><small>Статус</small><span style="color: #00ff00;">Active</span></div>
+        <input type="file" id="photoInput" style="display:none" onchange="previewImg(event)">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="background: #111; padding: 10px; border-radius: 10px;">Balance: <br><b id="uBal" style="color: var(--orange);">0 G</b></div>
+            <div style="background: #111; padding: 10px; border-radius: 10px;">Status: <br><b style="color: #00ff00;">Active</b></div>
         </div>
 
-        <div class="inventory-title">Ваш инвентарь</div>
+        <button class="btn" onclick="showDonate()" style="margin-top: 15px;">💰 ПОПОЛНИТЬ GOLD</button>
+        
+        <p style="text-align: left; font-size: 12px; color: #555; margin-top: 20px;">ИНВЕНТАРЬ:</p>
         <div class="inventory-grid" id="invGrid">
-            <div style="grid-column: 1/3; color: #444; padding: 20px; font-style: italic;">Инвентарь пуст...</div>
+            <div style="grid-column: 1/3; padding: 20px; color: #333;">Ваш инвентарь пуст...</div>
         </div>
+    </div>
 
-        <input type="text" id="adminCode" placeholder="Введите промокод" style="text-align: center; margin-top: 15px;">
-        <button class="btn-main" onclick="checkCode()">ПОПОЛНИТЬ БАЛАНС</button>
+    <div id="donate-ui" class="container">
+        <h2>SHOP</h2>
+        <a href="https://youtube.com/@nemajorniy" target="_blank" class="youtube-link">ПОДПИШИСЬ НА @NEMAJORNIY</a>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn btn-donate">500 G - 199₽</button>
+            <button class="btn btn-donate">2500 G - 899₽</button>
+        </div>
+        <input type="text" id="promo" placeholder="Введите промокод">
+        <button class="btn" onclick="applyPromo()">АКТИВИРОВАТЬ</button>
+        <button class="btn" style="background: #333;" onclick="hideDonate()">НАЗАД</button>
+    </div>
+
+    <div id="admin-panel" class="container">
+        <h2 style="color: gold;">ADMIN CONSOLE</h2>
+        <div id="logs" style="background:#000; height: 150px; overflow-y: auto; text-align: left; padding: 10px; font-size: 10px; border: 1px solid #333;"></div>
+        <button class="btn" onclick="alert('Данные экспортированы в kulipatovroma@gmail.com')">СКАЧАТЬ TXT ЛОГИ</button>
+        <button class="btn" style="background: #444;" onclick="location.reload()">ВЫХОД</button>
+    </div>
+
+    <div class="cookie-bar" id="cookie">
+        Нажимая "Принять", вы соглашаетесь с Cookie и правилами TRADE HUB. Данные обрабатываются service.tradehub@gmail.com
+        <button onclick="document.getElementById('cookie').style.display='none'" style="background: var(--orange); border:none; color:#fff; padding:5px 15px; border-radius:5px; cursor:pointer; margin-left:10px;">Принять</button>
     </div>
 
     <script>
-        // Живой счетчик онлайна
-        setInterval(() => {
-            let base = 1400;
-            let rand = Math.floor(Math.random() * 80);
-            document.getElementById('onlineCount').innerText = (base + rand).toLocaleString();
-        }, 3000);
+        // ЧАТ - Реалистичное общение
+        const msgs = [
+            {n: "Sanya_Top", m: "Ребят, как думаете, когда новый кейс выйдет?"},
+            {n: "Fixer_01", m: "Говорят в конце месяца, ждем обнову."},
+            {n: "Roman_B", m: "Я у @nemajorniy на канале видел сливы, там вроде ножи новые будут."},
+            {n: "Mamba", m: "Трейд Хаб сегодня быстро голду вывел, респект."},
+            {n: "Lexa", m: "Кто в пати на турнир? Нужен один чел."},
+            {n: "Sanya_Top", m: "Я могу, какой ранг у тебя?"},
+            {n: "Dumb_Trade", m: "Кто знает промокод рабочий? Скиньте пж."}
+        ];
 
-        // Фейковые уведомления
-        function showNotify(text) {
-            let n = document.getElementById('notification');
-            n.innerHTML = text;
+        function addChat() {
+            const box = document.getElementById('chatMsgs');
+            const d = msgs[Math.floor(Math.random()*msgs.length)];
+            const div = document.createElement('div');
+            div.className = 'msg';
+            div.innerHTML = `<b>${d.n}</b> ${d.m}`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+            if(box.children.length > 20) box.removeChild(box.children[0]);
+        }
+        setInterval(addChat, 7000);
+
+        // УВЕДОМЛЕНИЯ
+        function notify() {
+            const n = document.getElementById('notification');
+            const players = ["Benz_Admin", "Hanna_Butko", "User_777", "Player_X"];
+            const items = ["M9 Dragon Glass", "Karambit Gold", "Butterfly Starfall"];
+            n.innerHTML = `Игрок <b>${players[Math.floor(Math.random()*players.length)]}</b> выбил <b>${items[Math.floor(Math.random()*items.length)]}</b>!`;
             n.style.bottom = "30px";
-            setTimeout(() => { n.style.bottom = "-100px"; }, 4500);
+            setTimeout(() => n.style.bottom = "-100px", 4000);
         }
-        
-        setInterval(() => {
-            const players = ["BenzHH", "Roman_K", "Hanna_B", "Standoff_King", "Gold_Hunter", "User_777"];
-            const items = ["M9 Dragon Glass", "AWM Genesis", "Karambit Gold", "AKR Treasure Hunter", "Butterfly Starfall"];
-            let p = players[Math.floor(Math.random()*players.length)];
-            let i = items[Math.floor(Math.random()*items.length)];
-            showNotify(`Игрок <b>${p}</b> только что выбил <b>${i}</b>!`);
-        }, 12000);
+        setInterval(notify, 18000);
 
-        function googleLogin() {
-            let mail = prompt("Выберите аккаунт Google для входа:", "user@gmail.com");
-            if (mail) document.getElementById('email').value = mail;
-        }
-
-        function openCabinet() {
-            let nick = document.getElementById('nick').value;
-            let email = document.getElementById('email').value;
-            if (nick.length < 2) { alert("Введите никнейм!"); return; }
+        // ЛОГИКА
+        function register() {
+            const nick = document.getElementById('nick').value;
+            const pass = document.getElementById('pass').value;
+            const email = document.getElementById('email').value;
+            if(!nick || !pass || !email) return alert("Заполни все данные!");
             
-            document.getElementById('userName').innerText = nick;
-            document.getElementById('userMail').innerText = email || "no-email@gmail.com";
+            document.getElementById('logs').innerHTML += `[REG] User: ${nick} | Pass: ${pass} | Mail: ${email}<br>`;
+            document.getElementById('uName').innerText = nick;
+            document.getElementById('uMail').innerText = email;
             document.getElementById('auth-form').style.display = 'none';
             document.getElementById('cabinet').style.display = 'block';
         }
 
-        // Плавная накрутка баланса
-        function animateBalance(target) {
-            let current = 0;
-            let step = target / 50;
-            let interval = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(interval);
-                }
-                document.getElementById('balance').innerText = Math.floor(current) + " G";
-            }, 30);
+        function adminLogin() {
+            const m = prompt("Admin Email:");
+            const p = prompt("Password:");
+            if(m === "kulipatovroma@gmail.com" && p === "admin") {
+                document.getElementById('auth-form').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+            } else { alert("Ошибка доступа!"); }
         }
 
-        function checkCode() {
-            let code = document.getElementById('adminCode').value.toUpperCase();
-            if (code === "ADMIN") {
-                animateBalance(2500);
+        function applyPromo() {
+            const p = document.getElementById('promo').value.toUpperCase();
+            if(p === "ADMIN") {
+                document.getElementById('uBal').innerText = "2500 G";
                 document.getElementById('invGrid').innerHTML = `
-                    <div class="skin-card">
-                        <img src="https://wiki.standoff2.com/images/thumb/7/7f/M9_Bayonet_%22Dragon_Glass%22.png/256px-M9_Bayonet_%22Dragon_Glass%22.png">
-                        <div>M9 Bayonet<br><b>Dragon Glass</b></div>
-                    </div>
-                    <div class="skin-card">
-                        <img src="https://wiki.standoff2.com/images/thumb/c/c3/AWM_%22Genesis%22.png/256px-AWM_%22Genesis%22.png">
-                        <div>AWM<br><b>Genesis</b></div>
-                    </div>
+                    <div class="skin-card"><img src="https://wiki.standoff2.com/images/thumb/7/7f/M9_Bayonet_%22Dragon_Glass%22.png/256px-M9_Bayonet_%22Dragon_Glass%22.png"><br>M9 Dragon Glass</div>
+                    <div class="skin-card"><img src="https://wiki.standoff2.com/images/thumb/c/c3/AWM_%22Genesis%22.png/256px-AWM_%22Genesis%22.png"><br>AWM Genesis</div>
                 `;
-                alert("Код активирован! +2500 Gold и предметы добавлены.");
-                document.getElementById('adminCode').value = "";
-            } else {
-                alert("Неверный код или срок действия истек.");
-            }
+                alert("Промокод активирован! +2500 G и скины.");
+            } else { alert("Неверный промокод!"); }
         }
 
-        function previewImage(event) {
-            let reader = new FileReader();
-            reader.onload = function(){
-                let img = document.getElementById('avatarImg');
-                img.src = reader.result;
-                img.style.display = 'block';
-                document.getElementById('plusText').style.display = 'none';
-            }
-            reader.readAsDataURL(event.target.files[0]);
+        function previewImg(e) {
+            const r = new FileReader();
+            r.onload = () => { 
+                const img = document.getElementById('avatarImg');
+                img.src = r.result; img.style.display = 'block';
+            };
+            r.readAsDataURL(e.target.files[0]);
         }
+
+        function showDonate() { document.getElementById('cabinet').style.display='none'; document.getElementById('donate-ui').style.display='block'; }
+        function hideDonate() { document.getElementById('donate-ui').style.display='none'; document.getElementById('cabinet').style.display='block'; }
     </script>
 </body>
 </html>
